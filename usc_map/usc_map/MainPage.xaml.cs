@@ -168,11 +168,19 @@ namespace usc_map
 				_selectedPlace.formatMapItemUnselected();
 			}
 
+			DescriptionPanelTitle.Text = "";
+			DescriptionPanelBuildingCode.Text = "";
+			DescriptionPanelDescription.Text = "";
+
 			_selectedPlace = placeToSelect;
 
 			if (_selectedPlace != null)
 			{
 				_selectedPlace.formatMapItemSelected();
+
+				DescriptionPanelTitle.Text = _selectedPlace.Name;
+				DescriptionPanelBuildingCode.Text = _selectedPlace.BuildingCode;
+				DescriptionPanelDescription.Text = _selectedPlace.Description;
 			}
 		}
 
