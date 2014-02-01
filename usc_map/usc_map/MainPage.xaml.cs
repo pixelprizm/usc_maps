@@ -40,19 +40,19 @@ namespace usc_map
 			ApplicationBar.IsVisible = true;
 
 			_foodToggle = new ApplicationBarIconButton();
-			_foodToggle.IconUri = new Uri("/Assets/food_unselected.png", UriKind.Relative);
+			_foodToggle.IconUri = new Uri("/Assets/food_selected.png", UriKind.Relative);
 			_foodToggle.Text = "food";
 			_foodToggle.Click += _foodToggle_Click;
 			ApplicationBar.Buttons.Add(_foodToggle);
 
 			_studySpaceToggle = new ApplicationBarIconButton();
-			_studySpaceToggle.IconUri = new Uri("/Assets/study_unselected.png", UriKind.Relative);
+			_studySpaceToggle.IconUri = new Uri("/Assets/study_selected.png", UriKind.Relative);
 			_studySpaceToggle.Text = "study";
 			_studySpaceToggle.Click += _studySpaceToggle_Click;
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
 
 			_eventsToggle = new ApplicationBarIconButton();
-			_eventsToggle.IconUri = new Uri("/Assets/events_unselected.png", UriKind.Relative);
+			_eventsToggle.IconUri = new Uri("/Assets/events_selected.png", UriKind.Relative);
 			_eventsToggle.Text = "events";
 			_eventsToggle.Click += _eventsToggle_Click;
 			ApplicationBar.Buttons.Add(_eventsToggle);
@@ -189,16 +189,52 @@ namespace usc_map
 		void _studySpaceToggle_Click(object sender, EventArgs e)
 		{
 			StudyPlaceCollection.toggleMapVisibility();
+
+			if (StudyPlaceCollection.PlaceList.Count != 0)
+			{
+				if (StudyPlaceCollection.PlaceList[0].MapItem.Visibility == Visibility.Collapsed)
+				{
+					_studySpaceToggle.IconUri = new Uri("/Assets/study_unselected.png", UriKind.Relative);
+				}
+				else
+				{
+					_studySpaceToggle.IconUri = new Uri("/Assets/study_selected.png", UriKind.Relative);
+				}
+			}
 		}
 
 		void _foodToggle_Click(object sender, EventArgs e)
 		{
 			FoodPlaceCollection.toggleMapVisibility();
+
+			if (FoodPlaceCollection.PlaceList.Count != 0)
+			{
+				if (FoodPlaceCollection.PlaceList[0].MapItem.Visibility == Visibility.Collapsed)
+				{
+					_foodToggle.IconUri = new Uri("/Assets/food_unselected.png", UriKind.Relative);
+				}
+				else
+				{
+					_foodToggle.IconUri = new Uri("/Assets/food_selected.png", UriKind.Relative);
+				}
+			}
 		}
 
 		void _eventsToggle_Click(object sender, EventArgs e)
 		{
 			EventPlaceCollection.toggleMapVisibility();
+
+			if (EventPlaceCollection.PlaceList.Count != 0)
+			{
+				if (EventPlaceCollection.PlaceList[0].MapItem.Visibility == Visibility.Collapsed)
+				{
+					_eventsToggle.IconUri = new Uri("/Assets/events_unselected.png", UriKind.Relative);
+				}
+				else
+				{
+					_eventsToggle.IconUri = new Uri("/Assets/events_selected.png", UriKind.Relative);
+				}
+			}
 		}
 
 	}
