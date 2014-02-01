@@ -47,11 +47,6 @@
                       ZoomLevel="15.5"
                       PedestrianFeaturesEnabled="True"
                       >
-
-                <toolkit:MapExtensions.Children>
-                    <toolkit:UserLocationMarker x:Name="firstMarker"  />
-                    <toolkit:Pushpin x:Name="MyPushpin" Content="My Position"></toolkit:Pushpin>
-                </toolkit:MapExtensions.Children>
                 
             </maps:Map>
         </Grid>

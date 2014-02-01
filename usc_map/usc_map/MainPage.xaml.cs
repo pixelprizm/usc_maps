@@ -153,5 +153,17 @@ namespace usc_map
 			newMapOverlay.PositionOrigin = new Point(0.5, 0.5);
 			_mapLayer.Add(newMapOverlay);
 		}
+
+
+
+		private UscPlace _selectedPlace;
+		public void selectPlace(UscPlace placeToSelect)
+		{
+			_selectedPlace.formatMapItemUnselected();
+
+			_selectedPlace = placeToSelect;
+
+			_selectedPlace.formatMapItemSelected();
+		}
 	}
 }
