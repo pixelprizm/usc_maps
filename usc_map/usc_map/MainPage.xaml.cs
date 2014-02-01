@@ -35,17 +35,17 @@ namespace usc_map
 			ApplicationBar.IsVisible = true;
 
 			_eventsToggle = new ApplicationBarIconButton();
-			_eventsToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_eventsToggle.IconUri = new Uri("/Assets/events.png", UriKind.Relative);
 			_eventsToggle.Text = "events";
 			ApplicationBar.Buttons.Add(_eventsToggle);
 
 			_foodToggle = new ApplicationBarIconButton();
-			_foodToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_foodToggle.IconUri = new Uri("/Assets/food1.png", UriKind.Relative);
 			_foodToggle.Text = "food";
 			ApplicationBar.Buttons.Add(_foodToggle);
 
 			_studySpaceToggle = new ApplicationBarIconButton();
-			_studySpaceToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_studySpaceToggle.IconUri = new Uri("/Assets/study.png", UriKind.Relative);
 			_studySpaceToggle.Text = "study spaces";
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
 
