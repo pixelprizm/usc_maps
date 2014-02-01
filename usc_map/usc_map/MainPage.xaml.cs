@@ -33,6 +33,9 @@ namespace usc_map
         //List of search results to display
         List<MapApiObject> searchResults;
 
+		// This is so that we can remove the search results from the map.
+		private List<MapOverlay> _searchResultsOverlays = new List<MapOverlay>();
+
 		// Constructor
 		public MainPage()
 		{
@@ -103,6 +106,8 @@ namespace usc_map
         // Here we're gonna load those external API calls to UscMaps
         void searchButton_Click(object sender, RoutedEventArgs e)
         {
+			if (searchBox.Text == "") return;
+
             string webUri = "http://web-app.usc.edu/ws/uscmap/api?search=" + Uri.EscapeDataString(searchBox.Text);
             HttpWebRequest request =
                 (HttpWebRequest)HttpWebRequest.Create(webUri);
@@ -208,8 +213,22 @@ namespace usc_map
 
 		private void addSearchResultsToMap()
 		{
+			// Remove old search results from map.
+			foreach(MapOverlay o in _searchResultsOverlays)
+			{
+				// This dispather thing prevents unauthorized cross-thread data access.
+				Deployment.Current.Dispatcher.BeginInvoke(() =>
+				{
+					_mapLayer.Remove(o);
+				});
+			}
+			_searchResultsOverlays.Clear();
+			SearchPlaceCollection.PlaceList.Clear();
+
+			// Add search results to map.
 			foreach(MapApiObject obj in searchResults)
 			{
+				// This dispather thing prevents unauthorized cross-thread data access.
 				Deployment.Current.Dispatcher.BeginInvoke(() =>
 				{
 					SearchPlaceCollection.PlaceList.Add(new UscPlace(this, "search", obj.map_name, obj.building_code, "", obj.lat, obj.lng));
@@ -238,6 +257,11 @@ namespace usc_map
 			newMapOverlay.GeoCoordinate = new GeoCoordinate(newPlace.Latitude, newPlace.Longitude);
 			newMapOverlay.PositionOrigin = new Point(0.5, 0.5);
 			_mapLayer.Add(newMapOverlay);
+
+			if (newPlace.PlaceType == "search")
+			{
+				_searchResultsOverlays.Add(newMapOverlay);
+			}
 		}
 
 
