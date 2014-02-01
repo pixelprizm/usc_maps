@@ -13,14 +13,15 @@ namespace usc_map
 {
 	public class UscPlace
 	{
-		public string Name { get; set; }
-		public string BuildingCode { get; set; }
-		public string Description { get; set; }
+		public string Name { get; private set; }
+		public string BuildingCode { get; private set; }
+		public string Description { get; private set; }
+		public string PlaceType { get; private set; }
 
-		public double Latitude { get; set; }
-		public double Longitude { get; set; }
+		public double Latitude { get; private set; }
+		public double Longitude { get; private set; }
 
-		public Grid MapItem { get; set; }
+		public Grid MapItem { get; private set; }
 
 
 
@@ -37,9 +38,10 @@ namespace usc_map
 		/// <param name="description"></param>
 		/// <param name="latitude"></param>
 		/// <param name="longitude"></param>
-		public UscPlace(MainPage mainPage, string name, string buildingCode, string description, double latitude, double longitude)
+		public UscPlace(MainPage mainPage, string placeType, string name, string buildingCode, string description, double latitude, double longitude)
 		{
 			Name = name;
+			PlaceType = placeType;
 			BuildingCode = buildingCode;
 			Description = description;
 			Latitude = latitude;
@@ -59,16 +61,32 @@ namespace usc_map
 
 		public void formatMapItemUnselected()
 		{
-			MapItem.Height = 12;
-			MapItem.Width = 12;
-			MapItem.Background = new SolidColorBrush(Color.FromArgb(255, 0, 180, 0));
+			MapItem.Height = 24;
+			MapItem.Width = 24;
+
+			if(PlaceType == "study")
+			{
+				MapItem.Background = new SolidColorBrush(Colors.Green);
+			}
+			else if (PlaceType == "food")
+			{
+				MapItem.Background = new SolidColorBrush(Colors.Red);
+			}
+			else if (PlaceType == "foodoff")
+			{
+				MapItem.Background = new SolidColorBrush(Colors.Orange);
+			}
+			else if (PlaceType == "event")
+			{
+				MapItem.Background = new SolidColorBrush(Colors.Blue);
+			}
 		}
 
 		public void formatMapItemSelected()
 		{
-			MapItem.Height = 24;
-			MapItem.Width = 24;
-			MapItem.Background = new SolidColorBrush(Color.FromArgb(255, 180, 0, 0));
+			MapItem.Height = 32;
+			MapItem.Width = 32;
+			MapItem.Background = new SolidColorBrush(Colors.Yellow);
 		}
 	}
 }
