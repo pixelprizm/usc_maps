@@ -25,9 +25,9 @@ namespace usc_map
 	public partial class MainPage : PhoneApplicationPage
 	{
 		// App Bar stuff:
-		ApplicationBarIconButton _eventsToggle;
 		ApplicationBarIconButton _foodToggle;
 		ApplicationBarIconButton _studySpaceToggle;
+		ApplicationBarIconButton _eventsToggle;
 
 		// Constructor
 		public MainPage()
@@ -38,12 +38,6 @@ namespace usc_map
 			ApplicationBar = new ApplicationBar();
 			ApplicationBar.Mode = ApplicationBarMode.Default;
 			ApplicationBar.IsVisible = true;
-
-			_eventsToggle = new ApplicationBarIconButton();
-			_eventsToggle.IconUri = new Uri("/Assets/whiteevents.png", UriKind.Relative);
-			_eventsToggle.Text = "events";
-			_eventsToggle.Click += _eventsToggle_Click;
-			ApplicationBar.Buttons.Add(_eventsToggle);
 
 			_foodToggle = new ApplicationBarIconButton();
 			_foodToggle.IconUri = new Uri("/Assets/whitefood1.png", UriKind.Relative);
@@ -56,6 +50,12 @@ namespace usc_map
 			_studySpaceToggle.Text = "study";
 			_studySpaceToggle.Click += _studySpaceToggle_Click;
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
+
+			_eventsToggle = new ApplicationBarIconButton();
+			_eventsToggle.IconUri = new Uri("/Assets/whiteevents.png", UriKind.Relative);
+			_eventsToggle.Text = "events";
+			_eventsToggle.Click += _eventsToggle_Click;
+			ApplicationBar.Buttons.Add(_eventsToggle);
 
 			ShowMyLocationOnTheMap();
 
@@ -198,11 +198,6 @@ namespace usc_map
 
 
 
-		void _eventsToggle_Click(object sender, EventArgs e)
-		{
-			//EventsPlaceCollection.toggleMapVisibility();
-		}
-
 		void _studySpaceToggle_Click(object sender, EventArgs e)
 		{
 			StudyPlaceCollection.toggleMapVisibility();
@@ -211,6 +206,11 @@ namespace usc_map
 		void _foodToggle_Click(object sender, EventArgs e)
 		{
 			FoodPlaceCollection.toggleMapVisibility();
+		}
+
+		void _eventsToggle_Click(object sender, EventArgs e)
+		{
+			//EventsPlaceCollection.toggleMapVisibility();
 		}
 
 	}
