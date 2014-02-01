@@ -14,8 +14,6 @@ using usc_map.Resources;
 using System.Windows.Threading; // for timer
 using System.Windows.Media; // for SolidColorBrush
 
-using Microsoft.Phone.Maps.Controls;
-using System.Device.Location; // Provides the GeoCoordinate class.
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
 using ShowMyLocationOnMap;
@@ -30,6 +28,11 @@ namespace usc_map
 		ApplicationBarIconButton _studySpaceToggle;
 
 
+
+		
+
+
+
 		// Constructor
 		public MainPage()
 		{
@@ -41,18 +44,20 @@ namespace usc_map
 			ApplicationBar.IsVisible = true;
 
 			_eventsToggle = new ApplicationBarIconButton();
-			_eventsToggle.IconUri = new Uri("/Assets/events.png", UriKind.Relative);
+			_eventsToggle.IconUri = new Uri("/Assets/whiteevents.png", UriKind.Relative);
 			_eventsToggle.Text = "events";
+			_eventsToggle.Click += _eventsToggle_Click;
 			ApplicationBar.Buttons.Add(_eventsToggle);
 
 			_foodToggle = new ApplicationBarIconButton();
-			_foodToggle.IconUri = new Uri("/Assets/food1.png", UriKind.Relative);
+			_foodToggle.IconUri = new Uri("/Assets/whitefood1.png", UriKind.Relative);
 			_foodToggle.Text = "food";
 			ApplicationBar.Buttons.Add(_foodToggle);
 
 			_studySpaceToggle = new ApplicationBarIconButton();
-			_studySpaceToggle.IconUri = new Uri("/Assets/study.png", UriKind.Relative);
-			_studySpaceToggle.Text = "study spaces";
+			_studySpaceToggle.IconUri = new Uri("/Assets/whitestudy.png", UriKind.Relative);
+			_studySpaceToggle.Text = "study";
+			_studySpaceToggle.Click += _studySpaceToggle_Click;
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
 
 			ShowMyLocationOnTheMap();
@@ -60,7 +65,7 @@ namespace usc_map
 
 			this.Loaded += MainPage_Loaded;
 
-			initializeMapOverlays();
+			initializeMapData();
 		}
 
 		void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -115,23 +120,38 @@ namespace usc_map
 			uscMap.Layers.Add(myLocationLayer);
 		}
 
-		private void initializeMapOverlays()
+
+
+		MapLayer _mapLayer = new MapLayer();
+		private void initializeMapData()
 		{
-			// note: this stuff is from the following site: http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207037(v=vs.105).aspx
+			// Note that the following method involves creating all the study places and they each call the addPlaceToMapLayer method.
+			StudyPlaceCollection.addAllStudyPlaces(this);
 
-			Grid newGrid = new Grid();
-			newGrid.Height = 12;
-			newGrid.Width = 12;
-			newGrid.Background = new SolidColorBrush(Color.FromArgb(255, 0, 180, 0));
+			uscMap.Layers.Add(_mapLayer);
+		}
 
+
+
+		void _eventsToggle_Click(object sender, EventArgs e)
+		{
+		}
+
+		void _studySpaceToggle_Click(object sender, EventArgs e)
+		{
+			StudyPlaceCollection.toggleMapVisibility();
+		}
+
+
+
+		public void addPlaceToMapLayer(UscPlace newPlace)
+		{
 			MapOverlay newMapOverlay = new MapOverlay();
-			newMapOverlay.Content = newGrid;
-			newMapOverlay.GeoCoordinate = new GeoCoordinate(34.0209388733, -118.2855682373);
-			newMapOverlay.PositionOrigin = new Point(0.0, 0.0);
 
-			MapLayer newMapLayer = new MapLayer();
-			newMapLayer.Add(newMapOverlay);
-			uscMap.Layers.Add(newMapLayer);
+			newMapOverlay.Content = newPlace.MapItem;
+			newMapOverlay.GeoCoordinate = new GeoCoordinate(newPlace.Latitude, newPlace.Longitude);
+			newMapOverlay.PositionOrigin = new Point(0.5, 0.5);
+			_mapLayer.Add(newMapOverlay);
 		}
 	}
 }

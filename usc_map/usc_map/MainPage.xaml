@@ -54,8 +54,8 @@
                 </toolkit:MapExtensions.Children>
                 
             </maps:Map>
-
         </Grid>
+        
     </Grid>
 
 </phone:PhoneApplicationPage>
