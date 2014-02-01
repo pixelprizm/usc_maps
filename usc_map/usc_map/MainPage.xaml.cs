@@ -17,6 +17,8 @@ using System.Windows.Media; // for SolidColorBrush
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
 using ShowMyLocationOnMap;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace usc_map
 {
@@ -26,12 +28,6 @@ namespace usc_map
 		ApplicationBarIconButton _eventsToggle;
 		ApplicationBarIconButton _foodToggle;
 		ApplicationBarIconButton _studySpaceToggle;
-
-
-
-		
-
-
 
 		// Constructor
 		public MainPage()
@@ -79,7 +75,7 @@ namespace usc_map
 
 		void loadUserLocation(object sender, EventArgs e)  
 		{
-		  // firstMarker.GeoCoordinate = uscMap.Center;
+		    // firstMarker.GeoCoordinate = uscMap.Center;
 
 		   // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
 		   // marker.GeoCoordinate = uscMap.Center;
@@ -120,8 +116,6 @@ namespace usc_map
 			uscMap.Layers.Add(myLocationLayer);
 		}
 
-
-
 		MapLayer _mapLayer = new MapLayer();
 		private void initializeMapData()
 		{
@@ -131,18 +125,51 @@ namespace usc_map
 			uscMap.Layers.Add(_mapLayer);
 		}
 
+        void searchButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            StudyPlaceCollection.toggleMapVisibility();
+            
+            searchBox.Text = "";
 
+        }
+
+        // Here we're gonna load those external API calls to UscMaps
+     /*   private async Task<string> GetExternalResponse()
+        {
+            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(
+                new Uri(baseUri + numTextBox.Text + "&appkey=http%3A%2F%2Fsilverlight.net&type=xml"));
+
+            request.BeginGetResponse(new AsyncCallback(ReadCallback), request); 
+        }
+
+        // This is a callback function for the UscMaps API.  You remember those from your web design days, right?
+        private void ReadCallback(IAsyncResult asynchronousResult)
+        {
+            HttpWebRequest request =
+              (HttpWebRequest)asynchronousResult.AsyncState;
+
+            HttpWebResponse response =
+              (HttpWebResponse)request.EndGetResponse(asynchronousResult);
+
+            using (StreamReader streamReader1 =
+              new StreamReader(response.GetResponseStream()))
+            {
+                string resultString = streamReader1.ReadToEnd();
+                resultBlock.Text = "Using HttpWebRequest: " + resultString;
+            }
+        }   */
 
 		void _eventsToggle_Click(object sender, EventArgs e)
 		{
+            
+
 		}
 
 		void _studySpaceToggle_Click(object sender, EventArgs e)
 		{
 			StudyPlaceCollection.toggleMapVisibility();
 		}
-
-
 
 		public void addPlaceToMapLayer(UscPlace newPlace)
 		{
