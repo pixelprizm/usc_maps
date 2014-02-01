@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -42,15 +43,35 @@
             </Button>
         </Grid>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <maps:Map x:Name="uscMap"
-                      Center="34.023956, -118.285449"
-                      ZoomLevel="15.5"
-                      PedestrianFeaturesEnabled="True"
-                      >
-                
-            </maps:Map>
+        <maps:Map x:Name="uscMap"
+                    Grid.Row="1"
+                    Center="34.023956, -118.285449"
+                    ZoomLevel="15.5"
+                    PedestrianFeaturesEnabled="True"
+                    />
+            
+        <Grid x:Name="DescriptionPanel"
+              Grid.Row="2"
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="96"/>
+            </Grid.RowDefinitions>
+            
+            <TextBlock x:Name="DescriptionPanelTitle"
+                       Text=""
+                       FontSize="30" VerticalAlignment="Bottom"
+                       />
+            <TextBlock x:Name="DescriptionPanelBuildingCode"
+                       Text=""
+                       FontSize="24" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                       />
+            
+            <ScrollViewer Grid.Row="1">
+                <TextBlock x:Name="DescriptionPanelDescription"
+                           Text=""
+                           />
+            </ScrollViewer>
         </Grid>
         
     </Grid>
