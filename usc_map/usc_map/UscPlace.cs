@@ -48,11 +48,27 @@ namespace usc_map
 			// Initialize this place's grid to show up on the map and format it
 			// note: this stuff is from the following site: http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207037(v=vs.105).aspx
 			MapItem = new Grid();
+			formatMapItemUnselected();
+			MapItem.Tap += delegate(object sender, System.Windows.Input.GestureEventArgs e)
+			{
+				mainPage.selectPlace(this);
+			};
+
+			mainPage.addPlaceToMapLayer(this);
+		}
+
+		public void formatMapItemUnselected()
+		{
 			MapItem.Height = 12;
 			MapItem.Width = 12;
 			MapItem.Background = new SolidColorBrush(Color.FromArgb(255, 0, 180, 0));
+		}
 
-			mainPage.addPlaceToMapLayer(this);
+		public void formatMapItemSelected()
+		{
+			MapItem.Height = 24;
+			MapItem.Width = 24;
+			MapItem.Background = new SolidColorBrush(Color.FromArgb(255, 180, 0, 0));
 		}
 	}
 }
