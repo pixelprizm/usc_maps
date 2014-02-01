@@ -56,75 +56,65 @@ namespace usc_map
 			_studySpaceToggle.Text = "study spaces";
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
 
-            ShowMyLocationOnTheMap();
+			ShowMyLocationOnTheMap();
 
 
-            this.Loaded += MainPage_Loaded;
+			this.Loaded += MainPage_Loaded;
 
 			initializeMapOverlays();
 		}
 
-        void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            DispatcherTimer t = new DispatcherTimer(); 
-            t.Interval = TimeSpan.FromMilliseconds(2000);
-            t.Tick += loadUserLocation;
-            t.Start();
-        }
+		void MainPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			DispatcherTimer t = new DispatcherTimer(); 
+			t.Interval = TimeSpan.FromMilliseconds(2000);
+			t.Tick += loadUserLocation;
+			t.Start();
+		}
 
 
-        void loadUserLocation(object sender, EventArgs e)  
-        {
-          // firstMarker.GeoCoordinate = uscMap.Center;
+		void loadUserLocation(object sender, EventArgs e)  
+		{
+		  // firstMarker.GeoCoordinate = uscMap.Center;
 
-           // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
-           // marker.GeoCoordinate = uscMap.Center;
+		   // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
+		   // marker.GeoCoordinate = uscMap.Center;
 
-            //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
-            //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
-        }
-        //void uscMap_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    firstMarker.GeoCoordinate = uscMap.Center;
+			//Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
+			//pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
+		}
 
-        //    UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
-        //    marker.GeoCoordinate = uscMap.Center;
+		private async void ShowMyLocationOnTheMap()
+		{
+			Geolocator myGeolocator = new Geolocator();
+			Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
+			Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
+			GeoCoordinate myGeoCoordinate =
+			CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
 
-        //    //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
-        //    //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
-        //}
+			this.uscMap.Center = myGeoCoordinate;
+			this.uscMap.ZoomLevel = 16;
 
-        private async void ShowMyLocationOnTheMap()
-        {
-            Geolocator myGeolocator = new Geolocator();
-            Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
-            Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
-            GeoCoordinate myGeoCoordinate =
-            CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
+			// Create a small circle to mark the current location.
+			Ellipse myCircle = new Ellipse();
+			myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, 0x99, 0x00, 0x00));
+			myCircle.Height = 15;
+			myCircle.Width = 15;
+			myCircle.Opacity = 50;
 
-            this.uscMap.Center = myGeoCoordinate;
-            this.uscMap.ZoomLevel = 16;
+			// Create a MapOverlay to contain the circle.
+			MapOverlay myLocationOverlay = new MapOverlay();
+			myLocationOverlay.Content = myCircle;
+			myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+			myLocationOverlay.GeoCoordinate = myGeoCoordinate;
 
-            // Create a small circle to mark the current location.
-            Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, 0x99, 0x00, 0x00));
-            myCircle.Height = 15;
-            myCircle.Width = 15;
-            myCircle.Opacity = 50;
+			// Create a MapLayer to contain the MapOverlay.
+			MapLayer myLocationLayer = new MapLayer();
+			myLocationLayer.Add(myLocationOverlay);
 
-            // Create a MapOverlay to contain the circle.
-            MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myCircle;
-            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            myLocationOverlay.GeoCoordinate = myGeoCoordinate;
-
-            // Create a MapLayer to contain the MapOverlay.
-            MapLayer myLocationLayer = new MapLayer();
-            myLocationLayer.Add(myLocationOverlay);
-
-            // Add the MapLayer to the Map.
-            uscMap.Layers.Add(myLocationLayer);
-        }
+			// Add the MapLayer to the Map.
+			uscMap.Layers.Add(myLocationLayer);
+		}
 
 
 
