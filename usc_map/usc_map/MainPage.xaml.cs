@@ -14,12 +14,14 @@ using usc_map.Resources;
 using System.Windows.Threading; // for timer
 using System.Windows.Media; // for SolidColorBrush
 using System.Net;
+using System.IO;
 
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
 using ShowMyLocationOnMap;
 using System.Threading.Tasks;
 using System.IO;
+using System.Runtime.Serialization.Json;
 
 namespace usc_map
 {
@@ -132,12 +134,19 @@ namespace usc_map
             string webUri = "http://web-app.usc.edu/ws/uscmap/api?search=" + Uri.EscapeDataString(searchBox.Text);
             HttpWebRequest request =
                 (HttpWebRequest)HttpWebRequest.Create(webUri);
-            //searchBox.Text = "" + webUri;
+            searchBox.Text = "";
 
             request.BeginGetResponse(ReadCallback, request);
-
         }
 
+        public static void CopyStream(Stream input, Stream output)
+        {
+            byte[] buffer = new byte[16*1024];
+            int read;
+            while((read = input.Read (buffer, 0, buffer.Length) ) > 0) {
+                output.Write (buffer, 0, read);
+            }
+        }
         // This is a callback function for the UscMaps API.  You remember those from your web design days, right?
         private void ReadCallback(IAsyncResult result)
         {
@@ -149,11 +158,67 @@ namespace usc_map
                 try
                 {
                     WebResponse response = request.EndGetResponse(result);
-
                     StreamReader reader = new StreamReader(response.GetResponseStream());
-
                     resultText = reader.ReadToEnd();
-                    Console.Write(resultText);
+
+                 //   [{"location_id":"15","map_name":"Grace Ford Salvatori Hall","building_code":"GFS","lat":"34.0213356018","lng":"-118.2880020142"}]
+
+                    
+                    string[] words = resultText.Split(',');
+
+                    List<MapApiObject> objectList = new List<MapApiObject>();
+
+
+                    var mo = new MapApiObject();
+                    
+                    foreach (string s in words) {
+                        var t = s.Split(':');
+                        var z = t[0].IndexOf('"');
+                        var y = t[0].Substring(z + 1, (t[0].Length) - z - 2);
+
+                        var z2 = t[1].IndexOf('"');
+                        var yt = t[1].Substring(z2 + 1, (t[1].Length) - z2 - 2);
+                        var y2l = yt.IndexOf('"');
+                        var y2 = y2l > 0 ? yt.Substring(0, y2l) : yt;
+
+                        switch (y)
+                        {
+                            case "location_id":
+                            {
+                                mo.location_id = int.Parse(y2);
+                                break;
+                            }
+                            case "map_name":
+                            {
+                                mo.map_name = y2;
+                                break;
+                            }
+                            case "building_code":
+                            {
+                                mo.building_code = y2;
+                                break;
+                            }
+                            case "lat":
+                            {
+                                mo.lat = double.Parse(y2);
+                                break;
+                            }
+                            case "lng":
+                            {
+                                mo.lng = double.Parse(y2);
+
+                                
+                                objectList.Add(mo);
+                                mo = new MapApiObject();
+                                break;
+                            }
+                            default: break;
+                        }
+                            
+                    }
+                    // Now send that object list somewhere
+
+
                 }
                 catch (Exception e)
                 {
@@ -161,6 +226,7 @@ namespace usc_map
                     searchBox.Text = "" + resultText;
                     return;
                 }
+
             }
 
         }    
