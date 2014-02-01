@@ -140,9 +140,10 @@ namespace usc_map
 		MapLayer _mapLayer = new MapLayer();
 		private void initializeMapData()
 		{
-			// Note that the following method involves creating all the study places and they each call the addPlaceToMapLayer method.
+			// Note that the following methods involvs creating all the places and they each call the addPlaceToMapLayer method.
 			StudyPlaceCollection.addAllStudyPlaces(this);
 			FoodPlaceCollection.addAllFoodPlaces(this);
+			EventPlaceCollection.addAllEventPlaces(this);
 
 			uscMap.Layers.Add(_mapLayer);
 		}
@@ -189,7 +190,7 @@ namespace usc_map
 
 		void _eventsToggle_Click(object sender, EventArgs e)
 		{
-			//EventsPlaceCollection.toggleMapVisibility();
+			EventPlaceCollection.toggleMapVisibility();
 		}
 
 	}
