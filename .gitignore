@@ -1,0 +1,8 @@
+# Folders:
+*/*/obj
+*/*/Bin
+*/packages
+
+# File types:
+*.suo
+*.user
