@@ -8,8 +8,11 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell; // for App Bar
 using Microsoft.Phone.Maps.Toolkit;
+using Microsoft.Phone.Maps.Controls; // for putting controls on the map
+using System.Device.Location; // for gps I guess
 using usc_map.Resources;
 using System.Windows.Threading; // for timer
+using System.Windows.Media; // for SolidColorBrush
 
 namespace usc_map
 {
@@ -48,8 +51,8 @@ namespace usc_map
 
 
             this.Loaded += MainPage_Loaded;
-                
-            
+
+			initializeMapOverlays();
 		}
 
         void MainPage_Loaded(object sender, RoutedEventArgs e)
@@ -82,8 +85,17 @@ namespace usc_map
         //    //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
         //}
 
-      
 
 
+
+		private void initializeMapOverlays()
+		{
+			// note: this stuff is from the following site: http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207037(v=vs.105).aspx
+
+			Grid newGrid = new Grid();
+			newGrid.Height = 12;
+			newGrid.Width = 12;
+			newGrid.Background = new SolidColorBrush(Color.FromArgb(255, 127, 127, 127));
+		}
 	}
 }
