@@ -17,7 +17,6 @@ using System.Windows.Media; // for SolidColorBrush
 using Microsoft.Phone.Maps.Controls;
 using System.Device.Location; // Provides the GeoCoordinate class.
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
-using System.Windows.Media;
 using System.Windows.Shapes;
 using ShowMyLocationOnMap;
 
@@ -123,7 +122,16 @@ namespace usc_map
 			Grid newGrid = new Grid();
 			newGrid.Height = 12;
 			newGrid.Width = 12;
-			newGrid.Background = new SolidColorBrush(Color.FromArgb(255, 127, 127, 127));
+			newGrid.Background = new SolidColorBrush(Color.FromArgb(255, 0, 180, 0));
+
+			MapOverlay newMapOverlay = new MapOverlay();
+			newMapOverlay.Content = newGrid;
+			newMapOverlay.GeoCoordinate = new GeoCoordinate(34.0209388733, -118.2855682373);
+			newMapOverlay.PositionOrigin = new Point(0.0, 0.0);
+
+			MapLayer newMapLayer = new MapLayer();
+			newMapLayer.Add(newMapOverlay);
+			uscMap.Layers.Add(newMapLayer);
 		}
 	}
 }
