@@ -80,6 +80,10 @@ namespace usc_map
 			{
 				MapItem.Background = new SolidColorBrush(Colors.Blue);
 			}
+			else if (PlaceType == "search")
+			{
+				MapItem.Background = new SolidColorBrush(Colors.Purple);
+			}
 		}
 
 		public void formatMapItemSelected()

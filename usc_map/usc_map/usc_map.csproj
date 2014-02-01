@@ -107,6 +107,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SearchPlaceCollection.cs" />
     <Compile Include="StudyPlaceCollection.cs" />
     <Compile Include="UscPlace.cs" />
   </ItemGroup>

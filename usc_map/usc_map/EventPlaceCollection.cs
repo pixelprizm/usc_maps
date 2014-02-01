@@ -17,8 +17,9 @@ namespace usc_map
 
 		public static void addAllEventPlaces(MainPage mainPage)
 		{
-			PlaceList.Add(new UscPlace(mainPage, "event", "Manas Indian Restaurant", "", "Great Indian food", 34.028955, -118.291792));
-			PlaceList.Add(new UscPlace(mainPage, "event", "Ignatius Cafe", "", "One of the USC area's best kept secrets. Best lattes in walking distance of USC($3 donation, beans are carefully picked, roasted, and ground in-house). It is inside an old house that is now turned into all study rooms and owned by the Korean Catholic Church next door. Outside seating is beautiful. Hard to find from the street, but when you do, you'll be amazed.", 34.031792, -118.292940));
+			PlaceList.Add(new UscPlace(mainPage, "event", "MFA Open Studios: 2/1 5:00pm-10:00pm", "HAR", "The faculty and students of the USC Roski School of Fine Art invite you to the 2014 MFA Open Studios. Sixteen students will have their studios on display, offering a look into each student’s individual practice.", 34.019086, -118.287884));
+			PlaceList.Add(new UscPlace(mainPage, "event", "Creating & Coordinating the Global Initiative for Fiscal Transparency 2/3 12:00PM - 2:00PM", "VKC", "Please join us for a discussion with Sanjeev Khagram, John Parke Young Professor of Global Political Economy at Occidental College.", 34.021017, -118.284216));
+			PlaceList.Add(new UscPlace(mainPage, "event", "A Lecture and Demonstration on Shakespeare with Rob Clare 2/4 6:00PM - 7:30PM", "MCL", "Reservation required. Internationally acclaimed master-teacher and Shakespearian performance expert Rob Clare (Royal Shakespeare Company) demonstrates the extraordinary richness, dynamism and modernity of Shakespeare's texts.", 34.025061, -118.287692));
 		}
 
 		/// <summary>

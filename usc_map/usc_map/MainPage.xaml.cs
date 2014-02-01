@@ -19,7 +19,6 @@ using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
 using ShowMyLocationOnMap;
 using System.Threading.Tasks;
-using System.IO;
 using System.Runtime.Serialization.Json;
 
 namespace usc_map
@@ -192,6 +191,7 @@ namespace usc_map
                     // Now send that object list somewhere
                     searchResults = objectList;
 
+					addSearchResultsToMap();
                 }
                 catch (Exception e)
                 {
@@ -203,6 +203,19 @@ namespace usc_map
             }
 
         }
+
+
+
+		private void addSearchResultsToMap()
+		{
+			foreach(MapApiObject obj in searchResults)
+			{
+				Deployment.Current.Dispatcher.BeginInvoke(() =>
+				{
+					SearchPlaceCollection.PlaceList.Add(new UscPlace(this, "search", obj.map_name, obj.building_code, "", obj.lat, obj.lng));
+				});
+			}
+		}
 
 
 
