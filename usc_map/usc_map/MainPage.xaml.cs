@@ -19,10 +19,5 @@ namespace usc_map
 			InitializeComponent();
 
 		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			textbox0.Text = "you clicked me";
-		}
 	}
 }
