@@ -45,8 +45,6 @@ namespace usc_map
 			Latitude = latitude;
 			Longitude = longitude;
 
-
-
 			// Initialize this place's grid to show up on the map and format it
 			// note: this stuff is from the following site: http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207037(v=vs.105).aspx
 			MapItem = new Grid();
