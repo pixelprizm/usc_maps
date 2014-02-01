@@ -11,6 +11,13 @@ using Microsoft.Phone.Maps.Toolkit;
 using usc_map.Resources;
 using System.Windows.Threading; // for timer
 
+using Microsoft.Phone.Maps.Controls;
+using System.Device.Location; // Provides the GeoCoordinate class.
+using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
+using System.Windows.Media;
+using System.Windows.Shapes;
+using ShowMyLocationOnMap;
+
 namespace usc_map
 {
 	public partial class MainPage : PhoneApplicationPage
@@ -45,6 +52,8 @@ namespace usc_map
 			_studySpaceToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
 			_studySpaceToggle.Text = "study spaces";
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
+
+            ShowMyLocationOnTheMap();
 
 
             this.Loaded += MainPage_Loaded;
@@ -82,7 +91,37 @@ namespace usc_map
         //    //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
         //}
 
-      
+        private async void ShowMyLocationOnTheMap()
+        {
+            Geolocator myGeolocator = new Geolocator();
+            Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
+            Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
+            GeoCoordinate myGeoCoordinate =
+            CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
+
+            this.uscMap.Center = myGeoCoordinate;
+            this.uscMap.ZoomLevel = 16;
+
+            // Create a small circle to mark the current location.
+            Ellipse myCircle = new Ellipse();
+            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, 0x99, 0x00, 0x00));
+            myCircle.Height = 15;
+            myCircle.Width = 15;
+            myCircle.Opacity = 50;
+
+            // Create a MapOverlay to contain the circle.
+            MapOverlay myLocationOverlay = new MapOverlay();
+            myLocationOverlay.Content = myCircle;
+            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+            myLocationOverlay.GeoCoordinate = myGeoCoordinate;
+
+            // Create a MapLayer to contain the MapOverlay.
+            MapLayer myLocationLayer = new MapLayer();
+            myLocationLayer.Add(myLocationOverlay);
+
+            // Add the MapLayer to the Map.
+            uscMap.Layers.Add(myLocationLayer);
+        }
 
 
 	}
