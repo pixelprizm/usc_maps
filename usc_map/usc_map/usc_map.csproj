@@ -126,7 +126,11 @@
     <Content Include="Assets\ApplicationIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\events.png" />
     <Content Include="Assets\feature.search.png" />
+    <Content Include="Assets\food1.png" />
+    <Content Include="Assets\food2.png" />
+    <Content Include="Assets\study.png" />
     <Content Include="Assets\Tiles\FlipCycleTileLarge.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
