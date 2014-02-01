@@ -31,6 +31,9 @@ namespace usc_map
 		ApplicationBarIconButton _studySpaceToggle;
 		ApplicationBarIconButton _eventsToggle;
 
+        //List of search results to display
+        List<MapApiObject> searchResults;
+
 		// Constructor
 		public MainPage()
 		{
@@ -187,7 +190,7 @@ namespace usc_map
                             
                     }
                     // Now send that object list somewhere
-
+                    searchResults = objectList;
 
                 }
                 catch (Exception e)
