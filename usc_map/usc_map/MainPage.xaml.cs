@@ -13,6 +13,7 @@ using System.Device.Location; // for gps I guess
 using usc_map.Resources;
 using System.Windows.Threading; // for timer
 using System.Windows.Media; // for SolidColorBrush
+using System.Net;
 
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
@@ -125,40 +126,44 @@ namespace usc_map
 			uscMap.Layers.Add(_mapLayer);
 		}
 
+        // Here we're gonna load those external API calls to UscMaps
         void searchButton_Click(object sender, RoutedEventArgs e)
         {
-            
-            StudyPlaceCollection.toggleMapVisibility();
-            
-            searchBox.Text = "";
+            string webUri = "http://web-app.usc.edu/ws/uscmap/api?search=" + Uri.EscapeDataString(searchBox.Text);
+            HttpWebRequest request =
+                (HttpWebRequest)HttpWebRequest.Create(webUri);
+            //searchBox.Text = "" + webUri;
 
-        }
+            request.BeginGetResponse(ReadCallback, request);
 
-        // Here we're gonna load those external API calls to UscMaps
-     /*   private async Task<string> GetExternalResponse()
-        {
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(
-                new Uri(baseUri + numTextBox.Text + "&appkey=http%3A%2F%2Fsilverlight.net&type=xml"));
-
-            request.BeginGetResponse(new AsyncCallback(ReadCallback), request); 
         }
 
         // This is a callback function for the UscMaps API.  You remember those from your web design days, right?
-        private void ReadCallback(IAsyncResult asynchronousResult)
+        private void ReadCallback(IAsyncResult result)
         {
-            HttpWebRequest request =
-              (HttpWebRequest)asynchronousResult.AsyncState;
-
-            HttpWebResponse response =
-              (HttpWebResponse)request.EndGetResponse(asynchronousResult);
-
-            using (StreamReader streamReader1 =
-              new StreamReader(response.GetResponseStream()))
+            string resultText = "";
+            //searchBox.Text = "weeeee";
+            HttpWebRequest request = result.AsyncState as HttpWebRequest;
+            if (request != null)
             {
-                string resultString = streamReader1.ReadToEnd();
-                resultBlock.Text = "Using HttpWebRequest: " + resultString;
+                try
+                {
+                    WebResponse response = request.EndGetResponse(result);
+
+                    StreamReader reader = new StreamReader(response.GetResponseStream());
+
+                    resultText = reader.ReadToEnd();
+                    Console.Write(resultText);
+                }
+                catch (Exception e)
+                {
+                    resultText = "Gamertag not found.";
+                    searchBox.Text = "" + resultText;
+                    return;
+                }
             }
-        }   */
+
+        }    
 
 		void _eventsToggle_Click(object sender, EventArgs e)
 		{
