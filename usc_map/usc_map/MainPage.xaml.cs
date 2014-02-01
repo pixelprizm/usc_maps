@@ -73,7 +73,7 @@ namespace usc_map
 		}
 
 
-		void loadUserLocation(object sender, EventArgs e)  
+		void loadUserLocation(object sender, EventArgs e)
 		{
 		    // firstMarker.GeoCoordinate = uscMap.Center;
 
