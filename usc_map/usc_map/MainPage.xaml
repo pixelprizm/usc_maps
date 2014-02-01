@@ -43,7 +43,8 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <maps:Map x:Name="uscMap"
                       Center="34.023956, -118.285449"
-                      ZoomLevel="15"
+                      ZoomLevel="15.5"
+                      PedestrianFeaturesEnabled="True"
                       />
         </Grid>
     </Grid>
