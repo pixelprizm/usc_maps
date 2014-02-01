@@ -13,7 +13,6 @@ using System.Device.Location; // for gps I guess
 using usc_map.Resources;
 using System.Windows.Threading; // for timer
 using System.Windows.Media; // for SolidColorBrush
-using System.Net;
 
 using Windows.Devices.Geolocation; //Provides the Geocoordinate class.
 using System.Windows.Shapes;
@@ -49,6 +48,7 @@ namespace usc_map
 			_foodToggle = new ApplicationBarIconButton();
 			_foodToggle.IconUri = new Uri("/Assets/whitefood1.png", UriKind.Relative);
 			_foodToggle.Text = "food";
+			_foodToggle.Click += _foodToggle_Click;
 			ApplicationBar.Buttons.Add(_foodToggle);
 
 			_studySpaceToggle = new ApplicationBarIconButton();
@@ -117,15 +117,6 @@ namespace usc_map
 			uscMap.Layers.Add(myLocationLayer);
 		}
 
-		MapLayer _mapLayer = new MapLayer();
-		private void initializeMapData()
-		{
-			// Note that the following method involves creating all the study places and they each call the addPlaceToMapLayer method.
-			StudyPlaceCollection.addAllStudyPlaces(this);
-
-			uscMap.Layers.Add(_mapLayer);
-		}
-
         // Here we're gonna load those external API calls to UscMaps
         void searchButton_Click(object sender, RoutedEventArgs e)
         {
@@ -163,17 +154,18 @@ namespace usc_map
                 }
             }
 
-        }    
+        }
 
-		void _eventsToggle_Click(object sender, EventArgs e)
+
+
+		MapLayer _mapLayer = new MapLayer();
+		private void initializeMapData()
 		{
-            
+			// Note that the following method involves creating all the study places and they each call the addPlaceToMapLayer method.
+			StudyPlaceCollection.addAllStudyPlaces(this);
+			FoodPlaceCollection.addAllFoodPlaces(this);
 
-		}
-
-		void _studySpaceToggle_Click(object sender, EventArgs e)
-		{
-			StudyPlaceCollection.toggleMapVisibility();
+			uscMap.Layers.Add(_mapLayer);
 		}
 
 		public void addPlaceToMapLayer(UscPlace newPlace)
@@ -188,14 +180,38 @@ namespace usc_map
 
 
 
-		private UscPlace _selectedPlace;
+		private UscPlace _selectedPlace = null;
 		public void selectPlace(UscPlace placeToSelect)
 		{
-			_selectedPlace.formatMapItemUnselected();
+			if (_selectedPlace != null)
+			{
+				_selectedPlace.formatMapItemUnselected();
+			}
 
 			_selectedPlace = placeToSelect;
 
-			_selectedPlace.formatMapItemSelected();
+			if (_selectedPlace != null)
+			{
+				_selectedPlace.formatMapItemSelected();
+			}
 		}
+
+
+
+		void _eventsToggle_Click(object sender, EventArgs e)
+		{
+			//EventsPlaceCollection.toggleMapVisibility();
+		}
+
+		void _studySpaceToggle_Click(object sender, EventArgs e)
+		{
+			StudyPlaceCollection.toggleMapVisibility();
+		}
+
+		void _foodToggle_Click(object sender, EventArgs e)
+		{
+			FoodPlaceCollection.toggleMapVisibility();
+		}
+
 	}
 }
