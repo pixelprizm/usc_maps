@@ -7,7 +7,9 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell; // for App Bar
+using Microsoft.Phone.Maps.Toolkit;
 using usc_map.Resources;
+using System.Windows.Threading; // for timer
 
 namespace usc_map
 {
@@ -18,9 +20,11 @@ namespace usc_map
 		ApplicationBarIconButton _foodToggle;
 		ApplicationBarIconButton _studySpaceToggle;
 
+
 		// Constructor
 		public MainPage()
 		{
+
 			InitializeComponent();
 
 			ApplicationBar = new ApplicationBar();
@@ -41,6 +45,45 @@ namespace usc_map
 			_studySpaceToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
 			_studySpaceToggle.Text = "study spaces";
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
+
+
+            this.Loaded += MainPage_Loaded;
+                
+            
 		}
+
+        void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            DispatcherTimer t = new DispatcherTimer(); 
+            t.Interval = TimeSpan.FromMilliseconds(2000);
+            t.Tick += loadUserLocation;
+            t.Start();
+        }
+
+
+        void loadUserLocation(object sender, EventArgs e)  
+        {
+          // firstMarker.GeoCoordinate = uscMap.Center;
+
+           // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
+           // marker.GeoCoordinate = uscMap.Center;
+
+            //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
+            //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
+        }
+        //void uscMap_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    firstMarker.GeoCoordinate = uscMap.Center;
+
+        //    UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
+        //    marker.GeoCoordinate = uscMap.Center;
+
+        //    //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
+        //    //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
+        //}
+
+      
+
+
 	}
 }
