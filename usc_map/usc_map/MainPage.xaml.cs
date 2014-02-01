@@ -8,8 +8,11 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell; // for App Bar
 using Microsoft.Phone.Maps.Toolkit;
+using Microsoft.Phone.Maps.Controls; // for putting controls on the map
+using System.Device.Location; // for gps I guess
 using usc_map.Resources;
 using System.Windows.Threading; // for timer
+using System.Windows.Media; // for SolidColorBrush
 
 using Microsoft.Phone.Maps.Controls;
 using System.Device.Location; // Provides the GeoCoordinate class.
@@ -39,90 +42,88 @@ namespace usc_map
 			ApplicationBar.IsVisible = true;
 
 			_eventsToggle = new ApplicationBarIconButton();
-			_eventsToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_eventsToggle.IconUri = new Uri("/Assets/events.png", UriKind.Relative);
 			_eventsToggle.Text = "events";
 			ApplicationBar.Buttons.Add(_eventsToggle);
 
 			_foodToggle = new ApplicationBarIconButton();
-			_foodToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_foodToggle.IconUri = new Uri("/Assets/food1.png", UriKind.Relative);
 			_foodToggle.Text = "food";
 			ApplicationBar.Buttons.Add(_foodToggle);
 
 			_studySpaceToggle = new ApplicationBarIconButton();
-			_studySpaceToggle.IconUri = new Uri("/Assets/feature.search.png", UriKind.Relative);
+			_studySpaceToggle.IconUri = new Uri("/Assets/study.png", UriKind.Relative);
 			_studySpaceToggle.Text = "study spaces";
 			ApplicationBar.Buttons.Add(_studySpaceToggle);
 
-            ShowMyLocationOnTheMap();
+			ShowMyLocationOnTheMap();
 
 
-            this.Loaded += MainPage_Loaded;
-                
-            
+			this.Loaded += MainPage_Loaded;
+
+			initializeMapOverlays();
 		}
 
-        void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            DispatcherTimer t = new DispatcherTimer(); 
-            t.Interval = TimeSpan.FromMilliseconds(2000);
-            t.Tick += loadUserLocation;
-            t.Start();
-        }
+		void MainPage_Loaded(object sender, RoutedEventArgs e)
+		{
+			DispatcherTimer t = new DispatcherTimer(); 
+			t.Interval = TimeSpan.FromMilliseconds(2000);
+			t.Tick += loadUserLocation;
+			t.Start();
+		}
 
 
-        void loadUserLocation(object sender, EventArgs e)  
-        {
-          // firstMarker.GeoCoordinate = uscMap.Center;
+		void loadUserLocation(object sender, EventArgs e)  
+		{
+		  // firstMarker.GeoCoordinate = uscMap.Center;
 
-           // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
-           // marker.GeoCoordinate = uscMap.Center;
+		   // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
+		   // marker.GeoCoordinate = uscMap.Center;
 
-            //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
-            //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
-        }
-        //void uscMap_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    firstMarker.GeoCoordinate = uscMap.Center;
+			//Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
+			//pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
+		}
 
-        //    UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
-        //    marker.GeoCoordinate = uscMap.Center;
+		private async void ShowMyLocationOnTheMap()
+		{
+			Geolocator myGeolocator = new Geolocator();
+			Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
+			Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
+			GeoCoordinate myGeoCoordinate =
+			CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
 
-        //    //Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
-        //    //pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
-        //}
+			//this.uscMap.Center = myGeoCoordinate;
+			//this.uscMap.ZoomLevel = 16;
 
-        private async void ShowMyLocationOnTheMap()
-        {
-            Geolocator myGeolocator = new Geolocator();
-            Geoposition myGeoposition = await myGeolocator.GetGeopositionAsync();
-            Geocoordinate myGeocoordinate = myGeoposition.Coordinate;
-            GeoCoordinate myGeoCoordinate =
-            CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
+			// Create a small circle to mark the current location.
+			Ellipse myCircle = new Ellipse();
+			myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, 0x99, 0x00, 0x00));
+			myCircle.Height = 15;
+			myCircle.Width = 15;
+			myCircle.Opacity = 50;
 
-            //this.uscMap.Center = myGeoCoordinate;
-            //this.uscMap.ZoomLevel = 16;
+			// Create a MapOverlay to contain the circle.
+			MapOverlay myLocationOverlay = new MapOverlay();
+			myLocationOverlay.Content = myCircle;
+			myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
+			myLocationOverlay.GeoCoordinate = myGeoCoordinate;
 
-            // Create a small circle to mark the current location.
-            Ellipse myCircle = new Ellipse();
-            myCircle.Fill = new SolidColorBrush(Color.FromArgb(255, 0x99, 0x00, 0x00));
-            myCircle.Height = 15;
-            myCircle.Width = 15;
-            myCircle.Opacity = 50;
+			// Create a MapLayer to contain the MapOverlay.
+			MapLayer myLocationLayer = new MapLayer();
+			myLocationLayer.Add(myLocationOverlay);
 
-            // Create a MapOverlay to contain the circle.
-            MapOverlay myLocationOverlay = new MapOverlay();
-            myLocationOverlay.Content = myCircle;
-            myLocationOverlay.PositionOrigin = new Point(0.5, 0.5);
-            myLocationOverlay.GeoCoordinate = myGeoCoordinate;
+			// Add the MapLayer to the Map.
+			uscMap.Layers.Add(myLocationLayer);
+		}
 
-            // Create a MapLayer to contain the MapOverlay.
-            MapLayer myLocationLayer = new MapLayer();
-            myLocationLayer.Add(myLocationOverlay);
+		private void initializeMapOverlays()
+		{
+			// note: this stuff is from the following site: http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj207037(v=vs.105).aspx
 
-            // Add the MapLayer to the Map.
-            uscMap.Layers.Add(myLocationLayer);
-        }
-
-
+			Grid newGrid = new Grid();
+			newGrid.Height = 12;
+			newGrid.Width = 12;
+			newGrid.Background = new SolidColorBrush(Color.FromArgb(255, 127, 127, 127));
+		}
 	}
 }
