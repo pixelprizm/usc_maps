@@ -60,29 +60,8 @@ namespace usc_map
 			ShowMyLocationOnTheMap();
 
 
-			this.Loaded += MainPage_Loaded;
 
 			initializeMapData();
-		}
-
-		void MainPage_Loaded(object sender, RoutedEventArgs e)
-		{
-			DispatcherTimer t = new DispatcherTimer(); 
-			t.Interval = TimeSpan.FromMilliseconds(2000);
-			t.Tick += loadUserLocation;
-			t.Start();
-		}
-
-
-		void loadUserLocation(object sender, EventArgs e)
-		{
-		    // firstMarker.GeoCoordinate = uscMap.Center;
-
-		   // UserLocationMarker marker = (UserLocationMarker)this.FindName("firstMarker");
-		   // marker.GeoCoordinate = uscMap.Center;
-
-			//Pushpin pushpin = (Pushpin)uscMap.FindName("MyPushpin");
-			//pushpin.GeoCoordinate = new System.Device.Location.GeoCoordinate(34.023958, -118.285449);
 		}
 
 		private async void ShowMyLocationOnTheMap()
