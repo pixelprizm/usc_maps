@@ -99,8 +99,8 @@ namespace usc_map
             GeoCoordinate myGeoCoordinate =
             CoordinateConverter.ConvertGeocoordinate(myGeocoordinate);
 
-            this.uscMap.Center = myGeoCoordinate;
-            this.uscMap.ZoomLevel = 16;
+            //this.uscMap.Center = myGeoCoordinate;
+            //this.uscMap.ZoomLevel = 16;
 
             // Create a small circle to mark the current location.
             Ellipse myCircle = new Ellipse();
