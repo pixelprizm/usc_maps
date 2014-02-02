@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{15e38676-9c4f-4573-89a9-1a1e6dec49e1}" Title="usc_map" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="usc_map author" Description="Sample description" Publisher="usc_map" PublisherID="{2c1238aa-316d-44a8-9b67-7da68ce1b02c}">
+  <App xmlns="" ProductID="{15e38676-9c4f-4573-89a9-1a1e6dec49e1}" Title="USC Maps" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="usc_map author" Description="Sample description" Publisher="usc_map" PublisherID="{2c1238aa-316d-44a8-9b67-7da68ce1b02c}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
